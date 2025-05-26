@@ -21,9 +21,16 @@ impl Polynomial {
     pub fn evaluate(&self, x: f64) -> PointXY {
         let mut y = 0.0;
         for (i, coefficient) in self.coefficients.iter().enumerate() {
-            y += coefficient * x.powi(i.try_into().unwrap());
+            y += coefficient * x.powi(i as i32);
         }
         PointXY::new(x, y)
+    }
+    pub fn derivative(&self) -> Polynomial {
+        let mut derivative_coefficients = Vec::with_capacity(self.coefficients.len() - 1);
+        for (i, coefficient) in self.coefficients.iter().enumerate().skip(1) {
+            derivative_coefficients.push(i as f64 * coefficient);
+        }
+        Self::new(derivative_coefficients)
     }
 }
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
