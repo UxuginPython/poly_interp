@@ -9,6 +9,23 @@ impl PointXY {
         Self { x, y }
     }
 }
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct Polynomial {
+    coefficients: Vec<f64>,
+}
+impl Polynomial {
+    #[inline]
+    pub fn new(coefficients: Vec<f64>) -> Self {
+        Self { coefficients }
+    }
+    pub fn evaluate(&self, x: f64) -> PointXY {
+        let mut y = 0.0;
+        for (i, coefficient) in self.coefficients.iter().enumerate() {
+            y += coefficient * x.powi(i.try_into().unwrap());
+        }
+        PointXY::new(x, y)
+    }
+}
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct NewtonPolynomial3 {
     point0: PointXY,
