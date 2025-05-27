@@ -44,7 +44,7 @@ impl Polynomial {
         //y3 = c0 + c1(x3-x0) + c2(x3-x0)(x3-x1) + c3(x3-x0)(x3-x1)(x3-x2)
         //y3 - c0 - c1(x3-x0) - c2(x3-x0)(x3-x1) = c3(x3-x0)(x3-x1)(x3-x2)
         //[y3 - c0 - c1(x3-x0) - c2(x3-x0)(x3-x1)] / [(x3-x0)(x3-x1)(x3-x2)] = c3
-        //Remember that we generated the binomial coefficients (for example (x3-x0)(x3-x1)(x3-x2))
+        //Remember that we generated the binomial factors (for example (x3-x0)(x3-x1)(x3-x2))
         //before, so we new just fetch them from that Vec and they don't look very interesting
         //here.
         let mut coefficients = Vec::with_capacity(points.len());
