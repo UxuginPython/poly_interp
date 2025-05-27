@@ -155,6 +155,7 @@ impl Mul for Polynomial {
         Polynomial::new(coefficients)
     }
 }
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct PointXYT {
     pub x: f64,
     pub y: f64,
