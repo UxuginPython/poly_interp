@@ -117,3 +117,14 @@ fn polynomial_mul() {
         Polynomial::new(vec![5.0, 16.0, 34.0, 60.0, 61.0, 52.0, 32.0])
     );
 }
+#[test]
+fn xyt_curve() {
+    let xyt_curve = XYTCurve::new(vec![
+        PointXYT::new(2.0, 3.0, 5.0),
+        PointXYT::new(7.0, 11.0, 13.0),
+        PointXYT::new(17.0, 19.0, 23.0),
+    ]);
+    assert_eq!(xyt_curve.evaluate(5.0), PointXYT::new(2.0, 3.0, 5.0));
+    assert_eq!(xyt_curve.evaluate(13.0), PointXYT::new(7.0, 11.0, 13.0));
+    assert_eq!(xyt_curve.evaluate(23.0), PointXYT::new(17.0, 19.0, 23.0));
+}
