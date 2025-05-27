@@ -104,6 +104,16 @@ impl Polynomial {
         }
         Polynomial::new(integral_coefficients)
     }
+    pub fn newtons_method(&self, y: f64, x_guess: f64, iterations: u16) -> PointXY {
+        let derivative = self.derivative();
+        newtons_method(
+            |x| self.evaluate(x).y,
+            |x| derivative.evaluate(x).y,
+            y,
+            x_guess,
+            iterations,
+        )
+    }
 }
 impl From<f64> for Polynomial {
     fn from(was: f64) -> Self {
