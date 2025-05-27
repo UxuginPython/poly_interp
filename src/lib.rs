@@ -254,4 +254,27 @@ impl XYTCurve {
         let x = self.x_polynomial.evaluate(t).y;
         PointXYT::new(x, y, t)
     }
+    pub fn evaluate_normalized_t(&self, t: f64) -> PointXYT {
+        let derivative = self.derivative();
+        let speed = |t| {
+            let derivative_evaluation = derivative.evaluate(t);
+            (derivative_evaluation.x.powi(2) + derivative_evaluation.y.powi(2)).sqrt()
+        };
+        todo!();
+        //Pseudocode:
+        //integral(speed) IS NOT THE SAME as the magnitude of the self.evaluate(t).xy() vector.
+        //
+        //normalized_time_at_default_time(t) = newtons_method(integral(speed), speed, t)
+        //default_time_at_normalized_time(t) = newtons_method(normalized_time_at_default_time, derivative(normalized_time_at_default_time), t)
+        //self.evaluate(default_time_at_normalized_time(t))
+        //
+        //This is pretty bad for multiple reasons:
+        //1. I don't currently know how to find the derivative of normalized_time_at_default_time
+        //   or even the integral of speed.
+        //2. Nested Newton's method. Need I say more?
+        //
+        //Hang on, why isn't normalized_time_at_default_time just equal to integral(speed)?
+        //
+        //speed is a function of default time.
+    }
 }
