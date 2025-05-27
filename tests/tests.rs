@@ -138,3 +138,22 @@ fn xyt_curve() {
     assert_abs_diff_eq!(point.y, 19.0);
     assert_abs_diff_eq!(point.t, 23.0);
 }
+#[test]
+fn xyt_curve_derivative() {
+    //This should make x=t and y=t^2
+    let xyt_curve = XYTCurve::new(vec![
+        PointXYT::new(0.0, 0.0, 0.0),
+        PointXYT::new(1.0, 1.0, 1.0),
+        PointXYT::new(2.0, 4.0, 2.0),
+    ]);
+    //This should be x=1 and y=2t
+    let derivative = xyt_curve.derivative();
+    assert_eq!(
+        derivative,
+        XYTCurve::new(vec![
+            PointXYT::new(1.0, 0.0, 0.0),
+            PointXYT::new(1.0, 2.0, 1.0),
+            PointXYT::new(1.0, 4.0, 2.0),
+        ])
+    );
+}
