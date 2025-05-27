@@ -178,3 +178,39 @@ impl PointXYT {
         PointXY::new(self.t, self.y)
     }
 }
+#[derive(Clone, Debug, PartialEq)]
+pub struct XYTCurve {
+    x_polynomial: Polynomial,
+    y_polynomial: Polynomial,
+}
+impl XYTCurve {
+    pub fn new(points: Vec<PointXYT>) -> Self {
+        let mut x_polynomial_points = Vec::with_capacity(points.len());
+        for point in &points {
+            x_polynomial_points.push(point.tx());
+        }
+        let mut y_polynomial_points = Vec::with_capacity(points.len());
+        for point in points {
+            y_polynomial_points.push(point.ty());
+        }
+        Self {
+            x_polynomial: Polynomial::interpolate(x_polynomial_points),
+            y_polynomial: Polynomial::interpolate(y_polynomial_points),
+        }
+    }
+    #[inline]
+    pub fn evaluate(&self, t: f64) -> PointXYT {
+        PointXYT::new(
+            self.x_polynomial.evaluate(t).y,
+            self.y_polynomial.evaluate(t).y,
+            t,
+        )
+    }
+    #[inline]
+    pub fn derivative(&self) -> Self {
+        Self {
+            x_polynomial: self.x_polynomial.derivative(),
+            y_polynomial: self.y_polynomial.derivative(),
+        }
+    }
+}
