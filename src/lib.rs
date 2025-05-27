@@ -41,6 +41,14 @@ impl Polynomial {
         }
         Self::new(derivative_coefficients)
     }
+    pub fn integral(&self, c: f64) -> Polynomial {
+        let mut integral_coefficients = Vec::with_capacity(self.coefficients.len() + 1);
+        integral_coefficients.push(c);
+        for (i, coefficient) in self.coefficients.iter().enumerate() {
+            integral_coefficients.push(coefficient / (i + 1) as f64)
+        }
+        Polynomial::new(integral_coefficients)
+    }
 }
 impl Add for Polynomial {
     type Output = Self;

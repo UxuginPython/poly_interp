@@ -24,6 +24,16 @@ fn derivative() {
     );
 }
 #[test]
+fn integral() {
+    //4x^3+3x^2+2x+1
+    let polynomial = Polynomial::new(vec![4.0, 3.0, 3.0, 1.0]);
+    //0.25x^4+x^3+1.5x^2+4x+5
+    assert_eq!(
+        polynomial.integral(5.0),
+        Polynomial::new(vec![5.0, 4.0, 1.5, 1.0, 0.25])
+    );
+}
+#[test]
 fn polynomial_add() {
     let polynomial_a = Polynomial::new(vec![1.0, 2.0, 3.0, 4.0]);
     let polynomial_b = Polynomial::new(vec![5.0, 6.0, 7.0, 8.0]);
