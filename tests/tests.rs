@@ -21,6 +21,11 @@ fn polynomial_add() {
     let polynomial_b = Polynomial::new(vec![5.0, 6.0, 7.0, 8.0]);
     assert_eq!(
         polynomial_a + polynomial_b,
-        Polynomial::new([6.0, 8.0, 10.0, 12.0])
+        Polynomial::new(vec![6.0, 8.0, 10.0, 12.0])
     );
+}
+#[test]
+fn polynomial_mul_f64() {
+    let polynomial = Polynomial::new(vec![1.0, 2.0, 3.0, 4.0]);
+    assert_eq!(polynomial * 2.0, Polynomial::new(vec![2.0, 4.0, 6.0, 8.0]));
 }

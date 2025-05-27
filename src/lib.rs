@@ -48,6 +48,16 @@ impl Add for Polynomial {
         Self::new(new_coefficients)
     }
 }
+impl Mul<f64> for Polynomial {
+    type Output = Self;
+    fn mul(self, rhs: f64) -> Self {
+        let mut coefficients = self.coefficients;
+        for coefficient in &mut coefficients {
+            *coefficient *= rhs;
+        }
+        Self::new(coefficients)
+    }
+}
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct NewtonPolynomial3 {
     point0: PointXY,
