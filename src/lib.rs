@@ -256,10 +256,9 @@ impl XYTCurve {
     }
     fn t_to_speed_squared(&self, t: f64) -> f64 {
         let derivative = self.derivative();
-        //Pythagorean theorem written using x*x instead of x^2
-        let speed_squared = derivative.x_polynomial.clone() * derivative.x_polynomial
-            + derivative.y_polynomial.clone() * derivative.y_polynomial;
-        speed_squared.evaluate(t).y
+        let x = derivative.x_polynomial.evaluate(t).y;
+        let y = derivative.y_polynomial.evaluate(t).y;
+        x.powi(2) + y.powi(2)
     }
     pub fn t_to_distance(&self, t: f64) -> f64 {
         //Integral of square root
