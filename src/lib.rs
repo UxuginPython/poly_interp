@@ -20,6 +20,13 @@ impl Polynomial {
     pub fn new(coefficients: Vec<f64>) -> Self {
         Self { coefficients }
     }
+    pub fn from_zeros(zeros: Vec<f64>) -> Self {
+        let mut new_self = Polynomial::new(vec![1.0]);
+        for x in zeros {
+            new_self = new_self * Polynomial::new(vec![-x, 1.0]);
+        }
+        new_self
+    }
     pub fn evaluate(&self, x: f64) -> PointXY {
         let mut y = 0.0;
         for (i, coefficient) in self.coefficients.iter().enumerate() {

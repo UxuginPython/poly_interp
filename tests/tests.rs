@@ -6,6 +6,14 @@ fn evaluate() {
     assert_eq!(polynomial.evaluate(5.0), PointXY::new(5.0, 586.0));
 }
 #[test]
+fn from_zeros() {
+    let polynomial = Polynomial::from_zeros(vec![1.0, 2.0, 3.0]);
+    assert_eq!(polynomial, Polynomial::new(vec![-6.0, 11.0, -6.0, 1.0]));
+    assert_eq!(polynomial.evaluate(1.0), PointXY::new(1.0, 0.0));
+    assert_eq!(polynomial.evaluate(2.0), PointXY::new(2.0, 0.0));
+    assert_eq!(polynomial.evaluate(3.0), PointXY::new(3.0, 0.0));
+}
+#[test]
 fn derivative() {
     //4x^3+3x^2+2x+1
     let polynomial = Polynomial::new(vec![1.0, 2.0, 3.0, 4.0]);
