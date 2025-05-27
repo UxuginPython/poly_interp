@@ -254,6 +254,14 @@ impl XYTCurve {
         let x = self.x_polynomial.evaluate(t).y;
         PointXYT::new(x, y, t)
     }
+    pub fn t_to_distance(&self, t: f64) -> f64 {
+        let derivative = self.derivative();
+        //Pythagorean theorem written using x*x instead of x^2
+        let speed_squared = derivative.x_polynomial.clone() * derivative.x_polynomial
+            + derivative.y_polynomial.clone() * derivative.y_polynomial;
+        //Integral of square root
+        speed_squared.evaluate(t).y.powf(1.5) / 1.5
+    }
     pub fn evaluate_normalized_t(&self, t: f64) -> PointXYT {
         let derivative = self.derivative();
         let speed = |t| {
