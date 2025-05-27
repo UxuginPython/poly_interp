@@ -59,12 +59,43 @@ fn integral() {
     );
 }
 #[test]
+fn polynomial_newtons_method() {
+    //x^2
+    let polynomial = Polynomial::new(vec![0.0, 0.0, 1.0]);
+    assert_eq!(
+        polynomial.newtons_method(9.0, 1.0, 1000),
+        PointXY::new(3.0, 9.0)
+    );
+}
+#[test]
+fn polynomial_from_f64() {
+    let polynomial = Polynomial::from(5.0);
+    assert_eq!(polynomial.evaluate(0.0), PointXY::new(0.0, 5.0));
+    assert_eq!(polynomial.evaluate(-1.0), PointXY::new(-1.0, 5.0));
+    assert_eq!(polynomial.evaluate(1.0), PointXY::new(1.0, 5.0));
+    assert_eq!(polynomial.evaluate(1000.0), PointXY::new(1000.0, 5.0));
+}
+#[test]
+fn polynomial_neg() {
+    let polynomial = Polynomial::new(vec![1.0, 2.0, 3.0, 4.0]);
+    assert_eq!(-polynomial, Polynomial::new(vec![-1.0, -2.0, -3.0, -4.0]));
+}
+#[test]
 fn polynomial_add() {
     let polynomial_a = Polynomial::new(vec![1.0, 2.0, 3.0, 4.0]);
     let polynomial_b = Polynomial::new(vec![5.0, 6.0, 7.0, 8.0]);
     assert_eq!(
         polynomial_a + polynomial_b,
         Polynomial::new(vec![6.0, 8.0, 10.0, 12.0])
+    );
+}
+#[test]
+fn polynomial_sub() {
+    let polynomial_a = Polynomial::new(vec![1.0, 2.0, 3.0, 4.0]);
+    let polynomial_b = Polynomial::new(vec![8.0, 7.0, 6.0, 5.0]);
+    assert_eq!(
+        polynomial_a - polynomial_b,
+        Polynomial::new(vec![-7.0, -5.0, -3.0, -1.0])
     );
 }
 #[test]
