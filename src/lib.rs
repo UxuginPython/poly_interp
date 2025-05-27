@@ -35,6 +35,10 @@ pub struct Polynomial {
 impl Polynomial {
     #[inline]
     pub fn new(coefficients: Vec<f64>) -> Self {
+        let mut coefficients = coefficients;
+        while coefficients.last() == Some(&0.0) {
+            coefficients.pop();
+        }
         Self { coefficients }
     }
     pub fn from_zeros(zeros: Vec<f64>) -> Self {
