@@ -50,6 +50,16 @@ impl Polynomial {
         Polynomial::new(integral_coefficients)
     }
 }
+impl Neg for Polynomial {
+    type Output = Self;
+    fn neg(self) -> Self {
+        let mut coefficients = self.coefficients;
+        for coefficient in &mut coefficients {
+            *coefficient *= -1.0;
+        }
+        Self::new(coefficients)
+    }
+}
 impl Add for Polynomial {
     type Output = Self;
     fn add(self, rhs: Self) -> Self {
@@ -61,6 +71,12 @@ impl Add for Polynomial {
             new_coefficients[i] += coefficient;
         }
         Self::new(new_coefficients)
+    }
+}
+impl Sub for Polynomial {
+    type Output = Self;
+    fn sub(self, rhs: Self) -> Self {
+        self + -rhs
     }
 }
 impl Mul<f64> for Polynomial {
