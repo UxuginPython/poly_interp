@@ -68,8 +68,7 @@ impl Polynomial {
         for i in 0..points.len() {
             let mut numerator = points[i].y;
             for j in 0..i {
-                numerator =
-                    numerator - zeroing_polynomials[j].evaluate(points[i].x).y * coefficients[j];
+                numerator -= zeroing_polynomials[j].evaluate(points[i].x).y * coefficients[j];
             }
             coefficients.push(numerator / zeroing_polynomials[i].evaluate(points[i].x).y);
         }
