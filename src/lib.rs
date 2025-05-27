@@ -254,35 +254,25 @@ impl XYTCurve {
         let x = self.x_polynomial.evaluate(t).y;
         PointXYT::new(x, y, t)
     }
-    pub fn t_to_distance(&self, t: f64) -> f64 {
+    fn t_to_speed_squared(&self, t: f64) -> f64 {
         let derivative = self.derivative();
         //Pythagorean theorem written using x*x instead of x^2
         let speed_squared = derivative.x_polynomial.clone() * derivative.x_polynomial
             + derivative.y_polynomial.clone() * derivative.y_polynomial;
-        //Integral of square root
-        speed_squared.evaluate(t).y.powf(1.5) / 1.5
+        speed_squared.evaluate(t).y
     }
-    pub fn evaluate_normalized_t(&self, t: f64) -> PointXYT {
-        let derivative = self.derivative();
-        let speed = |t| {
-            let derivative_evaluation = derivative.evaluate(t);
-            (derivative_evaluation.x.powi(2) + derivative_evaluation.y.powi(2)).sqrt()
-        };
-        todo!();
-        //Pseudocode:
-        //integral(speed) IS NOT THE SAME as the magnitude of the self.evaluate(t).xy() vector.
-        //
-        //normalized_time_at_default_time(t) = newtons_method(integral(speed), speed, t)
-        //default_time_at_normalized_time(t) = newtons_method(normalized_time_at_default_time, derivative(normalized_time_at_default_time), t)
-        //self.evaluate(default_time_at_normalized_time(t))
-        //
-        //This is pretty bad for multiple reasons:
-        //1. I don't currently know how to find the derivative of normalized_time_at_default_time
-        //   or even the integral of speed.
-        //2. Nested Newton's method. Need I say more?
-        //
-        //Hang on, why isn't normalized_time_at_default_time just equal to integral(speed)?
-        //
-        //speed is a function of default time.
+    pub fn t_to_distance(&self, t: f64) -> f64 {
+        //Integral of square root
+        self.t_to_speed_squared(t).powf(1.5) / 1.5
+    }
+    pub fn distance_to_t(&self, distance: f64) -> f64 {
+        newtons_method(
+            |t| self.t_to_distance(t),
+            |t| self.t_to_speed_squared(t).sqrt(),
+            distance,
+            0.0,
+            1000,
+        )
+        .y
     }
 }
