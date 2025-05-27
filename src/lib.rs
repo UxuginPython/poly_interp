@@ -155,3 +155,26 @@ impl Mul for Polynomial {
         Polynomial::new(coefficients)
     }
 }
+pub struct PointXYT {
+    pub x: f64,
+    pub y: f64,
+    pub t: f64,
+}
+impl PointXYT {
+    #[inline]
+    pub fn new(x: f64, y: f64, t: f64) -> Self {
+        Self { x, y, t }
+    }
+    #[inline]
+    pub fn xy(&self) -> PointXY {
+        PointXY::new(self.x, self.y)
+    }
+    #[inline]
+    pub fn tx(&self) -> PointXY {
+        PointXY::new(self.t, self.x)
+    }
+    #[inline]
+    pub fn ty(&self) -> PointXY {
+        PointXY::new(self.t, self.y)
+    }
+}
