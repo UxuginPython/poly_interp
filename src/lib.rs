@@ -1,3 +1,5 @@
+use core::cmp::max;
+use core::ops::*;
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct PointXY {
     pub x: f64,
@@ -31,6 +33,19 @@ impl Polynomial {
             derivative_coefficients.push(i as f64 * coefficient);
         }
         Self::new(derivative_coefficients)
+    }
+}
+impl Add for Polynomial {
+    type Output = Self;
+    fn add(self, rhs: Self) -> Self {
+        let mut new_coefficients = vec![0.0; max(self.coefficients.len(), rhs.coefficients.len())];
+        for (i, coefficient) in self.coefficients.iter().enumerate() {
+            new_coefficients[i] += coefficient;
+        }
+        for (i, coefficient) in rhs.coefficients.iter().enumerate() {
+            new_coefficients[i] += coefficient;
+        }
+        Self::new(new_coefficients)
     }
 }
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
