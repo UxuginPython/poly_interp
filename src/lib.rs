@@ -41,6 +41,16 @@ impl Polynomial {
             + Self::from(c1) * Self::from_zeros(vec![p0.x])
             + Self::from(c2) * Self::from_zeros(vec![p0.x, p1.x])
     }
+    //TEMPORARY
+    pub fn interpolate3_2(p0: PointXY, p1: PointXY, p2: PointXY) -> Self {
+        let c0 = p0.y;
+        let c1 = (p1.y - c0) / Self::from_zeros(vec![p0.x]).evaluate(p1.x).y;
+        let c2 = (p2.y - c0 - c1 * Self::from_zeros(vec![p0.x]).evaluate(p2.x).y)
+            / Self::from_zeros(vec![p0.x, p1.x]).evaluate(p2.x).y;
+        Self::from(c0)
+            + Self::from(c1) * Self::from_zeros(vec![p0.x])
+            + Self::from(c2) * Self::from_zeros(vec![p0.x, p1.x])
+    }
     pub fn evaluate(&self, x: f64) -> PointXY {
         let mut y = 0.0;
         for (i, coefficient) in self.coefficients.iter().enumerate() {

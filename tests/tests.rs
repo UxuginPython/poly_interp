@@ -63,7 +63,7 @@ fn polynomial_mul() {
 }
 #[test]
 fn interpolate3() {
-    let polynomial = Polynomial::interpolate3(
+    let polynomial = Polynomial::interpolate3_2(
         PointXY::new(2.0, 3.0),
         PointXY::new(5.0, 7.0),
         PointXY::new(11.0, 13.0),
