@@ -264,13 +264,18 @@ impl XYTCurve {
         //Integral of square root
         self.t_to_speed_squared(t).powf(1.5) / 1.5
     }
-    pub fn distance_to_t(&self, distance: f64) -> f64 {
+    pub fn newtons_method_distance_to_t(
+        &self,
+        distance: f64,
+        t_guess: f64,
+        iterations: u16,
+    ) -> f64 {
         newtons_method(
             |t| self.t_to_distance(t),
             |t| self.t_to_speed_squared(t).sqrt(),
             distance,
-            0.0,
-            1000,
+            t_guess,
+            iterations,
         )
         .y
     }
