@@ -20,11 +20,11 @@ pub fn newtons_method<F: Fn(f64) -> f64, D: Fn(f64) -> f64>(
 ) -> PointXY {
     let mut x = x_guess;
     for _ in 0..iterations {
-        let derivative_evaluation = derivative(x);
-        if derivative_evaluation == 0.0 {
+        let function_evaluation_minus_y = function(x) - y;
+        if function_evaluation_minus_y == 0.0 {
             break;
         }
-        x -= (function(x) - y) / derivative_evaluation;
+        x -= function_evaluation_minus_y / derivative(x);
     }
     PointXY::new(x, function(x))
 }
