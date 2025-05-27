@@ -27,6 +27,20 @@ impl Polynomial {
         }
         new_self
     }
+    //TEMPORARY
+    pub fn interpolate3(p0: PointXY, p1: PointXY, p2: PointXY) -> Self {
+        //y0 = c0
+        //y1 = c0 + c1(x1 - x0)
+        //y1 - c0 = c1(x1 - x0)
+        //y = c0 + c1(x - x0)
+        let c0 = p0.y;
+        let c1 = (p1.y - c0) / (p1.x - p0.x);
+        let c2 = (p2.y - c0 - c1 * (p2.x - p0.x)) / (p2.x - p0.x) / (p2.x - p1.x);
+        //y = c0 + c1(x - x0) + c2(x - x0)(x - x1)
+        Self::from(c0)
+            + Self::from(c1) * Self::from_zeros(vec![p0.x])
+            + Self::from(c2) * Self::from_zeros(vec![p0.x, p1.x])
+    }
     pub fn evaluate(&self, x: f64) -> PointXY {
         let mut y = 0.0;
         for (i, coefficient) in self.coefficients.iter().enumerate() {
@@ -48,6 +62,11 @@ impl Polynomial {
             integral_coefficients.push(coefficient / (i + 1) as f64)
         }
         Polynomial::new(integral_coefficients)
+    }
+}
+impl From<f64> for Polynomial {
+    fn from(was: f64) -> Self {
+        Self::new(vec![was])
     }
 }
 impl Neg for Polynomial {
