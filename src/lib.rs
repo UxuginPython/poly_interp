@@ -240,4 +240,32 @@ impl XYTCurve {
             y_polynomial: self.y_polynomial.derivative(),
         }
     }
+    pub fn newtons_method_x(&self, x: f64, t_guess: f64, iterations: u16) -> PointXYT {
+        let derivative = self.derivative();
+        let newton_output = newtons_method(
+            |t| self.evaluate(t).x,
+            |t| derivative.evaluate(t).x,
+            x,
+            t_guess,
+            iterations,
+        );
+        let t = newton_output.x;
+        let x = newton_output.y;
+        let y = self.evaluate(t).y;
+        PointXYT::new(x, y, t)
+    }
+    pub fn newtons_method_y(&self, y: f64, t_guess: f64, iterations: u16) -> PointXYT {
+        let derivative = self.derivative();
+        let newton_output = newtons_method(
+            |t| self.evaluate(t).y,
+            |t| derivative.evaluate(t).y,
+            y,
+            t_guess,
+            iterations,
+        );
+        let t = newton_output.x;
+        let y = newton_output.y;
+        let x = self.evaluate(t).x;
+        PointXYT::new(x, y, t)
+    }
 }
