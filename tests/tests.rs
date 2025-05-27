@@ -1,3 +1,4 @@
+use approx::assert_abs_diff_eq;
 use poly_interp::*;
 #[test]
 fn newtons_method_() {
@@ -124,7 +125,16 @@ fn xyt_curve() {
         PointXYT::new(7.0, 11.0, 13.0),
         PointXYT::new(17.0, 19.0, 23.0),
     ]);
-    assert_eq!(xyt_curve.evaluate(5.0), PointXYT::new(2.0, 3.0, 5.0));
-    assert_eq!(xyt_curve.evaluate(13.0), PointXYT::new(7.0, 11.0, 13.0));
-    assert_eq!(xyt_curve.evaluate(23.0), PointXYT::new(17.0, 19.0, 23.0));
+    let point = xyt_curve.evaluate(5.0);
+    assert_abs_diff_eq!(point.x, 2.0);
+    assert_abs_diff_eq!(point.y, 3.0);
+    assert_abs_diff_eq!(point.t, 5.0);
+    let point = xyt_curve.evaluate(13.0);
+    assert_abs_diff_eq!(point.x, 7.0);
+    assert_abs_diff_eq!(point.y, 11.0, epsilon = 0.00000000000001);
+    assert_abs_diff_eq!(point.t, 13.0);
+    let point = xyt_curve.evaluate(23.0);
+    assert_abs_diff_eq!(point.x, 17.0);
+    assert_abs_diff_eq!(point.y, 19.0);
+    assert_abs_diff_eq!(point.t, 23.0);
 }
