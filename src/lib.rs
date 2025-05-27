@@ -28,6 +28,9 @@ impl Polynomial {
         new_self
     }
     pub fn interpolate(points: Vec<PointXY>) -> Self {
+        //In the Newton polynomial form, coefficients are almost always seen with their
+        //corresponding binomial factors, e.g., c3(x-x0)(x-x1)(x-x2). This generates these binomial
+        //factors without needing to calculate the coefficients themselves yet.
         let mut zeroing_polynomials = Vec::with_capacity(points.len());
         for i in 0..points.len() {
             let mut new_zeros = Vec::with_capacity(i);
@@ -36,6 +39,14 @@ impl Polynomial {
             }
             zeroing_polynomials.push(Self::from_zeros(new_zeros));
         }
+        //Now we do actually calculate the coefficients. Here's an example showing the algebra used
+        //to derive the math for this section:
+        //y3 = c0 + c1(x3-x0) + c2(x3-x0)(x3-x1) + c3(x3-x0)(x3-x1)(x3-x2)
+        //y3 - c0 - c1(x3-x0) - c2(x3-x0)(x3-x1) = c3(x3-x0)(x3-x1)(x3-x2)
+        //[y3 - c0 - c1(x3-x0) - c2(x3-x0)(x3-x1)] / [(x3-x0)(x3-x1)(x3-x2)] = c3
+        //Remember that we generated the binomial coefficients (for example (x3-x0)(x3-x1)(x3-x2))
+        //before, so we new just fetch them from that Vec and they don't look very interesting
+        //here.
         let mut coefficients = Vec::with_capacity(points.len());
         for i in 0..points.len() {
             let mut numerator = points[i].y;
@@ -45,6 +56,8 @@ impl Polynomial {
             }
             coefficients.push(numerator / zeroing_polynomials[i].evaluate(points[i].x).y);
         }
+        //This is the final summation into, to continue our example,
+        //y = c0 + c1(x-x0) + c2(x-x0)(x-x1) + c3(x-x0)(x-x1)(x-x2)
         let mut final_polynomial = Self::default();
         for (i, zeroing_polynomial) in zeroing_polynomials.into_iter().enumerate() {
             final_polynomial = final_polynomial + zeroing_polynomial * coefficients[i];
