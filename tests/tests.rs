@@ -62,12 +62,12 @@ fn polynomial_mul() {
     );
 }
 #[test]
-fn interpolate3() {
-    let polynomial = Polynomial::interpolate3_2(
+fn interpolate() {
+    let polynomial = Polynomial::interpolate(vec![
         PointXY::new(2.0, 3.0),
         PointXY::new(5.0, 7.0),
         PointXY::new(11.0, 13.0),
-    );
+    ]);
     assert_eq!(polynomial.evaluate(2.0), PointXY::new(2.0, 3.0));
     assert_eq!(polynomial.evaluate(5.0), PointXY::new(5.0, 7.0));
     assert_eq!(polynomial.evaluate(11.0), PointXY::new(11.0, 13.0));

@@ -51,6 +51,30 @@ impl Polynomial {
             + Self::from(c1) * Self::from_zeros(vec![p0.x])
             + Self::from(c2) * Self::from_zeros(vec![p0.x, p1.x])
     }
+    pub fn interpolate(points: Vec<PointXY>) -> Self {
+        let mut zeroing_polynomials = Vec::with_capacity(points.len());
+        for i in 0..points.len() {
+            let mut new_zeros = Vec::with_capacity(i);
+            for j in 0..i {
+                new_zeros.push(points[j].x);
+            }
+            zeroing_polynomials.push(Self::from_zeros(new_zeros));
+        }
+        let mut coefficients = Vec::with_capacity(points.len());
+        for i in 0..points.len() {
+            let mut numerator = points[i].y;
+            for j in 0..i {
+                numerator =
+                    numerator - zeroing_polynomials[j].evaluate(points[i].x).y * coefficients[j];
+            }
+            coefficients.push(numerator / zeroing_polynomials[i].evaluate(points[i].x).y);
+        }
+        let mut final_polynomial = Self::default();
+        for i in 0..points.len() {
+            final_polynomial = final_polynomial + zeroing_polynomials[i].clone() * coefficients[i];
+        }
+        final_polynomial
+    }
     pub fn evaluate(&self, x: f64) -> PointXY {
         let mut y = 0.0;
         for (i, coefficient) in self.coefficients.iter().enumerate() {
