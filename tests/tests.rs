@@ -157,3 +157,21 @@ fn xyt_curve_derivative() {
         ])
     );
 }
+#[test]
+fn xyt_curve_newtons_method() {
+    //x=t^2; y=t^3
+    let xyt_curve = XYTCurve::new(vec![
+        PointXYT::new(0.0, 0.0, 0.0),
+        PointXYT::new(1.0, 1.0, 1.0),
+        PointXYT::new(4.0, 8.0, 2.0),
+        PointXYT::new(9.0, 27.0, 3.0),
+    ]);
+    assert_eq!(
+        xyt_curve.newtons_method_x(16.0, 1.0, 1000),
+        PointXYT::new(16.0, 64.0, 4.0)
+    );
+    assert_eq!(
+        xyt_curve.newtons_method_y(64.0, 1.0, 1000),
+        PointXYT::new(16.0, 64.0, 4.0)
+    );
+}
