@@ -66,8 +66,10 @@ impl Polynomial {
     }
     pub fn evaluate(&self, x: f64) -> PointXY {
         let mut y = 0.0;
-        for (i, coefficient) in self.coefficients.iter().enumerate() {
-            y += coefficient * x.powi(i as i32);
+        let mut x_power = 1.0;
+        for coefficient in &self.coefficients {
+            y += coefficient * x_power;
+            x_power *= x;
         }
         PointXY::new(x, y)
     }
