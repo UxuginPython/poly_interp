@@ -29,3 +29,8 @@ fn polynomial_mul_f64() {
     let polynomial = Polynomial::new(vec![1.0, 2.0, 3.0, 4.0]);
     assert_eq!(polynomial * 2.0, Polynomial::new(vec![2.0, 4.0, 6.0, 8.0]));
 }
+#[test]
+fn polynomial_div_f64() {
+    let polynomial = Polynomial::new(vec![2.0, 4.0, 6.0, 8.0]);
+    assert_eq!(polynomial / 2.0, Polynomial::new(vec![1.0, 2.0, 3.0, 4.0]));
+}
