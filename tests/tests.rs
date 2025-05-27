@@ -72,3 +72,17 @@ fn interpolate() {
     assert_eq!(polynomial.evaluate(5.0), PointXY::new(5.0, 7.0));
     assert_eq!(polynomial.evaluate(11.0), PointXY::new(11.0, 13.0));
 }
+#[test]
+fn newtons_method_() {
+    fn square(x: f64) -> f64 {
+        x.powi(2)
+    }
+    //Derivative of square
+    fn double(x: f64) -> f64 {
+        2.0 * x
+    }
+    assert_eq!(
+        newtons_method(square, double, 9.0, 1.0, 1000),
+        PointXY::new(3.0, 9.0)
+    );
+}

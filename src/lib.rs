@@ -11,6 +11,23 @@ impl PointXY {
         Self { x, y }
     }
 }
+pub fn newtons_method<F: Fn(f64) -> f64, D: Fn(f64) -> f64>(
+    function: F,
+    derivative: D,
+    y: f64,
+    x_guess: f64,
+    iterations: u16,
+) -> PointXY {
+    let mut x = x_guess;
+    for _ in 0..iterations {
+        let derivative_evaluation = derivative(x);
+        if derivative_evaluation == 0.0 {
+            break;
+        }
+        x -= (function(x) - y) / derivative_evaluation;
+    }
+    PointXY::new(x, function(x))
+}
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct Polynomial {
     coefficients: Vec<f64>,
