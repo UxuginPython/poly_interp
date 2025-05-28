@@ -16,6 +16,12 @@ impl PointXY {
         Self { x, y }
     }
 }
+///Performs an iterative process to approximate the inverse of a function using its derivative at a
+///given y coordinate. (Solves f(x)=y for x at a given y.) This requires an initial "guess" at the
+///desired x value and a maximum number of iterations to perform when calculating it. The function
+///returns early if it detects that x has been calculated perfectly (`function(x)` returns exactly
+///`y`). It may return NaN or infinity if the derivative returns 0 at one of the progressive
+///estimates of x. The function returns (x, f(x)) and not (x, y) if they are different.
 pub fn newtons_method<F: Fn(f64) -> f64, D: Fn(f64) -> f64>(
     function: F,
     derivative: D,
