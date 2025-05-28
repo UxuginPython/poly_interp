@@ -1,3 +1,5 @@
+//!A simple but powerful polynomial library focused on interpolation between points. Works with
+//!both standard polynomials and curves of x(t) and y(t).
 #![warn(missing_docs)]
 use core::cmp::max;
 use core::ops::*;
