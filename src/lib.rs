@@ -1,11 +1,13 @@
 use core::cmp::max;
 use core::ops::*;
+///A point with x and y coordinates.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct PointXY {
     pub x: f64,
     pub y: f64,
 }
 impl PointXY {
+    ///Constructor for `PointXY`.
     #[inline]
     pub fn new(x: f64, y: f64) -> Self {
         Self { x, y }
@@ -28,11 +30,15 @@ pub fn newtons_method<F: Fn(f64) -> f64, D: Fn(f64) -> f64>(
     }
     PointXY::new(x, function(x))
 }
+///A polynomial function.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct Polynomial {
     coefficients: Vec<f64>,
 }
 impl Polynomial {
+    ///Constructor for `Polynomial`. The index of each coefficient in the `Vec` is its
+    ///corresponding exponent. For example, the polynomial x^4+2x^2+3x+1 would be constructed with
+    ///`Polynomial::new(vec![1.0, 3.0, 2.0, 0.0, 1.0])`.
     #[inline]
     pub fn new(coefficients: Vec<f64>) -> Self {
         let mut coefficients = coefficients;
@@ -41,6 +47,8 @@ impl Polynomial {
         }
         Self { coefficients }
     }
+    ///Construct a `Polynomial` where `polynomial.evaluate(x) == PointXY::new(x, 0.0)` for every
+    ///value of `x` in the `zeros` `Vec`.
     pub fn from_zeros(zeros: Vec<f64>) -> Self {
         let mut new_self = Polynomial::new(vec![1.0]);
         for x in zeros {
@@ -48,6 +56,8 @@ impl Polynomial {
         }
         new_self
     }
+    ///Interpolate the lowest-degree polynomial going through every point in the `points` `Vec`
+    ///using an algorithm based on Newton's form.
     pub fn interpolate(points: Vec<PointXY>) -> Self {
         //In the Newton polynomial form, coefficients are almost always seen with their
         //corresponding binomial factors, e.g., c3(x-x0)(x-x1)(x-x2). This generates these binomial
@@ -84,6 +94,8 @@ impl Polynomial {
         }
         final_polynomial
     }
+    ///Evaluate the polynomial. Returns a `PointXY` containing (x, f(x)) where x is `evaluate`'s
+    ///input and f(x) is the mathematical function the `Polynomial` object represents.
     pub fn evaluate(&self, x: f64) -> PointXY {
         let mut y = 0.0;
         let mut x_power = 1.0;
@@ -93,6 +105,7 @@ impl Polynomial {
         }
         PointXY::new(x, y)
     }
+    ///Solve for the derivative function of the polynomial using the power rule.
     pub fn derivative(&self) -> Polynomial {
         let mut derivative_coefficients = Vec::with_capacity(self.coefficients.len() - 1);
         for (i, coefficient) in self.coefficients.iter().enumerate().skip(1) {
@@ -100,6 +113,8 @@ impl Polynomial {
         }
         Self::new(derivative_coefficients)
     }
+    ///Calculate the indefinite integral of the polynomial using the power rule given `c`, the
+    ///constant of integration.
     pub fn integral(&self, c: f64) -> Polynomial {
         let mut integral_coefficients = Vec::with_capacity(self.coefficients.len() + 1);
         integral_coefficients.push(c);
@@ -108,6 +123,10 @@ impl Polynomial {
         }
         Polynomial::new(integral_coefficients)
     }
+    ///Use Newton's method to find an x value for which `polynomial.evaluate(x).y` will return approximately a
+    ///given y. This requires an initial "guess" at said x value and a maximum number of iterations
+    ///to perform when estimating the x value. See the documentation of [`newtons_method`], the
+    ///function that this calls internally, for more information.
     pub fn newtons_method(&self, y: f64, x_guess: f64, iterations: u16) -> PointXY {
         let derivative = self.derivative();
         newtons_method(
@@ -185,6 +204,7 @@ impl Mul for Polynomial {
         Polynomial::new(coefficients)
     }
 }
+///A point with x, y, and t coordinates. t is usually the independent variable here.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct PointXYT {
     pub x: f64,
@@ -192,29 +212,36 @@ pub struct PointXYT {
     pub t: f64,
 }
 impl PointXYT {
+    ///Constructor for `PointXYT`.
     #[inline]
     pub fn new(x: f64, y: f64, t: f64) -> Self {
         Self { x, y, t }
     }
+    ///Get the point (x, y) as a `PointXY`.
     #[inline]
     pub fn xy(&self) -> PointXY {
         PointXY::new(self.x, self.y)
     }
+    ///Get the point (t, x) as a `PointXY`.
     #[inline]
     pub fn tx(&self) -> PointXY {
         PointXY::new(self.t, self.x)
     }
+    ///Get the point (t, y) as a `PointXY`.
     #[inline]
     pub fn ty(&self) -> PointXY {
         PointXY::new(self.t, self.y)
     }
 }
+///A smooth curve based on functions x(t) and y(t).
 #[derive(Clone, Debug, PartialEq)]
 pub struct XYTCurve {
     x_polynomial: Polynomial,
     y_polynomial: Polynomial,
 }
 impl XYTCurve {
+    ///Interpolate an `XYTCurve` that will go through a set of points using lowest-degree
+    ///polynomials for the internal x(t) and y(t) functions.
     pub fn new(points: Vec<PointXYT>) -> Self {
         let mut x_polynomial_points = Vec::with_capacity(points.len());
         for point in &points {
@@ -229,6 +256,7 @@ impl XYTCurve {
             y_polynomial: Polynomial::interpolate(y_polynomial_points),
         }
     }
+    ///Evaluate the curve at a given t. Returns (x(t), y(t), t) as a `PointXYT`.
     #[inline]
     pub fn evaluate(&self, t: f64) -> PointXYT {
         PointXYT::new(
@@ -237,6 +265,8 @@ impl XYTCurve {
             t,
         )
     }
+    ///Return the derivative of the curve. This can be thought of as the "velocity" at which a
+    ///point moves down the curve as t increases at a constant rate.
     #[inline]
     pub fn derivative(&self) -> Self {
         Self {
@@ -244,6 +274,10 @@ impl XYTCurve {
             y_polynomial: self.y_polynomial.derivative(),
         }
     }
+    ///Estimate a t at which `curve.evaluate(t)` will return (x, y(t), t) for a given x using
+    ///Newton's method. This requires a "guess" at this t value and a maximum number of iterations
+    ///to perform when estimating t. See the documentation of [`newtons_method`], the function
+    ///which this calls internally, for more information.
     pub fn newtons_method_x(&self, x: f64, t_guess: f64, iterations: u16) -> PointXYT {
         let newton_output = self.x_polynomial.newtons_method(x, t_guess, iterations);
         let x = newton_output.y;
@@ -251,6 +285,10 @@ impl XYTCurve {
         let y = self.y_polynomial.evaluate(t).y;
         PointXYT::new(x, y, t)
     }
+    ///Estimate a t at which `curve.evaluate(t)` will return (x(t), y, t) for a given y using
+    ///Newton's method. This requires a "guess" at this t value and a maximum number of iterations
+    ///to perform when estimating t. See the documentation of [`newtons_method`], the function
+    ///which this calls internally, for more information.
     pub fn newtons_method_y(&self, y: f64, t_guess: f64, iterations: u16) -> PointXYT {
         let newton_output = self.y_polynomial.newtons_method(y, t_guess, iterations);
         let y = newton_output.y;
