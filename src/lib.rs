@@ -1,9 +1,12 @@
+#![warn(missing_docs)]
 use core::cmp::max;
 use core::ops::*;
 ///A point with x and y coordinates.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct PointXY {
+    ///The x coordinate.
     pub x: f64,
+    ///The y coordinate.
     pub y: f64,
 }
 impl PointXY {
@@ -207,8 +210,11 @@ impl Mul for Polynomial {
 ///A point with x, y, and t coordinates. t is usually the independent variable here.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct PointXYT {
+    ///The x coordinate.
     pub x: f64,
+    ///The y coordinate.
     pub y: f64,
+    ///The t coordinate. This is usually the independent variable.
     pub t: f64,
 }
 impl PointXYT {
