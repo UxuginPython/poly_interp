@@ -314,10 +314,15 @@ impl XYTCurve {
         let y = derivative.y_polynomial.evaluate(t).y;
         x.powi(2) + y.powi(2)
     }
+    ///Calculates the distance along the curve between 0 and t.
     pub fn t_to_distance(&self, t: f64) -> f64 {
         //Integral of square root
         self.t_to_speed_squared(t).powf(1.5) / 1.5
     }
+    ///Uses Newton's method to calculate t at a given distance along the curve. This requires an
+    ///initial "guess" at this t and a maximum number of iterations to perform when estimating it.
+    ///See the documentation of [`newtons_method`], the function which this calls internally, for
+    ///more information.
     pub fn newtons_method_distance_to_t(
         &self,
         distance: f64,
