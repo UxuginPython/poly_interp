@@ -16,10 +16,10 @@ pub fn newtons_method<F: Fn(f64) -> f64, D: Fn(f64) -> f64>(
     derivative: D,
     y: f64,
     x_guess: f64,
-    iterations: u16,
+    max_iterations: u16,
 ) -> PointXY {
     let mut x = x_guess;
-    for _ in 0..iterations {
+    for _ in 0..max_iterations {
         let function_evaluation_minus_y = function(x) - y;
         if function_evaluation_minus_y == 0.0 {
             break;
@@ -108,14 +108,14 @@ impl Polynomial {
         }
         Polynomial::new(integral_coefficients)
     }
-    pub fn newtons_method(&self, y: f64, x_guess: f64, iterations: u16) -> PointXY {
+    pub fn newtons_method(&self, y: f64, x_guess: f64, max_iterations: u16) -> PointXY {
         let derivative = self.derivative();
         newtons_method(
             |x| self.evaluate(x).y,
             |x| derivative.evaluate(x).y,
             y,
             x_guess,
-            iterations,
+            max_iterations,
         )
     }
 }
@@ -244,15 +244,15 @@ impl XYTCurve {
             y_polynomial: self.y_polynomial.derivative(),
         }
     }
-    pub fn newtons_method_x(&self, x: f64, t_guess: f64, iterations: u16) -> PointXYT {
-        let newton_output = self.x_polynomial.newtons_method(x, t_guess, iterations);
+    pub fn newtons_method_x(&self, x: f64, t_guess: f64, max_iterations: u16) -> PointXYT {
+        let newton_output = self.x_polynomial.newtons_method(x, t_guess, max_iterations);
         let x = newton_output.y;
         let t = newton_output.x;
         let y = self.y_polynomial.evaluate(t).y;
         PointXYT::new(x, y, t)
     }
-    pub fn newtons_method_y(&self, y: f64, t_guess: f64, iterations: u16) -> PointXYT {
-        let newton_output = self.y_polynomial.newtons_method(y, t_guess, iterations);
+    pub fn newtons_method_y(&self, y: f64, t_guess: f64, max_iterations: u16) -> PointXYT {
+        let newton_output = self.y_polynomial.newtons_method(y, t_guess, max_iterations);
         let y = newton_output.y;
         let t = newton_output.x;
         let x = self.x_polynomial.evaluate(t).y;
@@ -272,14 +272,14 @@ impl XYTCurve {
         &self,
         distance: f64,
         t_guess: f64,
-        iterations: u16,
+        max_iterations: u16,
     ) -> f64 {
         newtons_method(
             |t| self.t_to_distance(t),
             |t| self.t_to_speed_squared(t).sqrt(),
             distance,
             t_guess,
-            iterations,
+            max_iterations,
         )
         .y
     }
