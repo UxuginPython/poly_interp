@@ -113,7 +113,7 @@ impl Polynomial {
         }
         Self::new(derivative_coefficients)
     }
-    ///Calculate the indefinite integral of the polynomial using the power rule given `c`, the
+    ///Calculate the indefinite integral of the polynomial using the power rule given c, the
     ///constant of integration.
     pub fn integral(&self, c: f64) -> Polynomial {
         let mut integral_coefficients = Vec::with_capacity(self.coefficients.len() + 1);
@@ -123,10 +123,10 @@ impl Polynomial {
         }
         Polynomial::new(integral_coefficients)
     }
-    ///Use Newton's method to find an x value for which `polynomial.evaluate(x).y` will return approximately a
-    ///given y. This requires an initial "guess" at said x value and a maximum number of iterations
-    ///to perform when estimating the x value. See the documentation of [`newtons_method`], the
-    ///function that this calls internally, for more information.
+    ///Estimate an x for which `polynomial.evaluate(x)` will return (x, y) for a given y using
+    ///Newton's method. This requires an initial "guess" at this x value and a maximum number of
+    ///iterations to perform when estimating x. See the documentation for [`newtons_method`], the
+    ///function which this uses internally, for more information.
     pub fn newtons_method(&self, y: f64, x_guess: f64, iterations: u16) -> PointXY {
         let derivative = self.derivative();
         newtons_method(
