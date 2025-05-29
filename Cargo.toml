@@ -1,7 +1,17 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright 2025 UxuginPython
+
 [package]
 name = "poly_interp"
-version = "0.1.0"
+version = "1.0.0-beta.0"
+license = "BSD-3-Clause"
 edition = "2024"
+authors = ["UxuginPython <uxugin at uxugin dot com>"]
+homepage = "http://rrtk.org/crate/poly_interp"
+repository = "https://github.com/UxuginPython/poly_interp"
+description = "A simple but powerful polynomial library focused on interpolation between points."
+keywords = ["polynomial", "interpolation", "newton"]
+categories = ["mathematics"]
 
 [dependencies]
 [dev-dependencies]

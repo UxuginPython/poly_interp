@@ -1,5 +1,7 @@
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright 2025 UxuginPython
 //!A simple but powerful polynomial library focused on interpolation between points. Works with
-//!both standard polynomials and curves of x(t) and y(t).
+//!both standard polynomials and parametric curves.
 #![warn(missing_docs)]
 use core::cmp::max;
 use core::ops::*;

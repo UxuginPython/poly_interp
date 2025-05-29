@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright 2025 UxuginPython
 use approx::assert_abs_diff_eq;
 use poly_interp::*;
 #[test]
