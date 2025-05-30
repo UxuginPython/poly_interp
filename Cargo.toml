@@ -11,8 +11,11 @@ homepage = "http://rrtk.org/crate/poly_interp"
 repository = "https://github.com/UxuginPython/poly_interp"
 description = "A simple but powerful polynomial library focused on interpolation between points."
 keywords = ["polynomial", "interpolation", "newton"]
-categories = ["mathematics"]
+categories = ["mathematics", "no-std"]
 
 [dependencies]
 [dev-dependencies]
 approx = "0.5.1"
+[features]
+std = []
+default = ["std"]

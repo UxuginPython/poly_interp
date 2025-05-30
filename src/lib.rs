@@ -3,6 +3,9 @@
 //!A simple but powerful polynomial library focused on interpolation between points. Works with
 //!both standard polynomials and parametric curves.
 #![warn(missing_docs)]
+#![cfg_attr(not(feature = "std"), no_std)]
+extern crate alloc;
+use alloc::{vec, vec::Vec};
 use core::cmp::max;
 use core::ops::*;
 ///A point with x and y coordinates.
@@ -312,6 +315,9 @@ impl XYTCurve {
         let x = self.x_polynomial.evaluate(t).y;
         PointXYT::new(x, y, t)
     }
+    //This would work in no_std if the last line was changed to `x * x + y * y`; it's just that
+    //it's a private method and it's not used outside of std-only functions.
+    #[cfg(feature = "std")]
     fn t_to_speed_squared(&self, t: f64) -> f64 {
         let derivative = self.derivative();
         let x = derivative.x_polynomial.evaluate(t).y;
@@ -319,6 +325,7 @@ impl XYTCurve {
         x.powi(2) + y.powi(2)
     }
     ///Calculates the distance along the curve between 0 and t.
+    #[cfg(feature = "std")]
     pub fn t_to_distance(&self, t: f64) -> f64 {
         //Integral of square root
         self.t_to_speed_squared(t).powf(1.5) / 1.5
@@ -327,6 +334,7 @@ impl XYTCurve {
     ///initial "guess" at this t and a maximum number of iterations to perform when estimating it.
     ///See the documentation of [`newtons_method`], the function which this calls internally, for
     ///more information.
+    #[cfg(feature = "std")]
     pub fn newtons_method_distance_to_t(
         &self,
         distance: f64,
