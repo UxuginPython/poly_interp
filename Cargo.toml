@@ -3,7 +3,7 @@
 
 [package]
 name = "poly_interp"
-version = "1.0.0-beta.0"
+version = "1.0.0-beta.1"
 license = "BSD-3-Clause"
 edition = "2024"
 authors = ["UxuginPython <uxugin at uxugin dot com>"]

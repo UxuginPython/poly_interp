@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright 2025 UxuginPython
 //!A simple but powerful polynomial library focused on interpolation between points. Works with
-//!both standard polynomials and parametric curves.
+//!both standard polynomials and parametric curves. Mostly no_std although a dynamic allocator is
+//!required.
 #![warn(missing_docs)]
 #![cfg_attr(not(feature = "std"), no_std)]
 extern crate alloc;
